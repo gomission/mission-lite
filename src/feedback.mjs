@@ -8,6 +8,7 @@ const FEEDBACK_MANIFEST_FILE = "feedback-manifest.json";
 const DEFAULT_FLUSH_BATCH = 25;
 const DEFAULT_FLUSH_MS = 700;
 const MAX_EVENT_PAYLOAD_CHARS = 180;
+const FEEDBACK_HEADER_ENV_PREFIX = "MISSION_LITE_FEEDBACK_HEADER_";
 
 function parseBoolean(raw, fallback = false) {
   if (typeof raw === "boolean") return raw;
@@ -22,6 +23,48 @@ function clip(value, max = 120) {
   const text = String(value || "").replace(/\s+/g, " ").trim();
   if (!text) return "";
   return text.length > max ? `${text.slice(0, max - 1)}…` : text;
+}
+
+function normalizeCustomHeaderName(name = "") {
+  const normalized = String(name)
+    .trim()
+    .toLowerCase()
+    .replace(/__+/g, "-")
+    .replace(/_/g, "-");
+  if (!normalized) return "";
+  return normalized.startsWith("x-") ? normalized : `x-${normalized}`;
+}
+
+function parseEnvFeedbackHeaders() {
+  const out = {};
+  for (const [key, value] of Object.entries(process.env)) {
+    if (!key.startsWith(FEEDBACK_HEADER_ENV_PREFIX)) continue;
+    const headerName = normalizeCustomHeaderName(key.slice(FEEDBACK_HEADER_ENV_PREFIX.length));
+    if (!headerName || !value) continue;
+    out[headerName] = String(value).slice(0, 180);
+  }
+
+  const defaults = {};
+  const version = process.env.MISSION_LITE_BUILD_VERSION || process.env.MISSION_LITE_VERSION;
+  const build = process.env.MISSION_LITE_BUILD_TAG || process.env.MISSION_LITE_BUILD || process.env.MISSION_LITE_BUILD_ID;
+  const channel = process.env.MISSION_LITE_CHANNEL;
+
+  if (version) defaults["x-mission-lite-version"] = String(version).slice(0, 160);
+  if (build) defaults["x-mission-lite-build"] = String(build).slice(0, 160);
+  if (channel) defaults["x-mission-lite-channel"] = String(channel).slice(0, 160);
+
+  return { ...out, ...defaults };
+}
+
+function feedbackHeaders({ appVersion } = {}) {
+  const defaults = parseEnvFeedbackHeaders();
+  return {
+    "content-type": "application/json",
+    accept: "application/json",
+    "user-agent": `mission-lite/${appVersion || "unknown"}`,
+    "x-mission-lite-version": defaults["x-mission-lite-version"] || appVersion || "unknown",
+    ...defaults,
+  };
 }
 
 function normalizeMetadata(value, depth = 0) {
@@ -183,11 +226,7 @@ export function createFeedbackCollector({
       try {
         const response = await fetch(endpoint, {
           method: "POST",
-          headers: {
-            "content-type": "application/json",
-            "accept": "application/json",
-            "user-agent": `mission-lite/${appVersion || "unknown"}`,
-          },
+          headers: feedbackHeaders({ appVersion }),
           body: JSON.stringify(payload),
           signal: controller.signal,
         });

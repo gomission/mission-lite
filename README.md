@@ -58,6 +58,10 @@ The default CLI launch settings enable this reporting, using:
 - `MISSION_LITE_FEEDBACK_ENDPOINT` (default: `https://gomission.app/api/v1/mission-lite/feedback`)
 - `MISSION_LITE_FEEDBACK_BATCH` (default: `25`)
 - `MISSION_LITE_FEEDBACK_FLUSH_MS` (default: `700`)
+- `MISSION_LITE_VERSION` or `MISSION_LITE_BUILD_VERSION`
+- `MISSION_LITE_BUILD` / `MISSION_LITE_BUILD_TAG` / `MISSION_LITE_BUILD_ID`
+- `MISSION_LITE_CHANNEL`
+- `MISSION_LITE_FEEDBACK_HEADER_<UPPERCASE_NAME>` (for any additional `x-<lowercase_name>` pass-through header)
 
 Events are queued in `mission-lite-data/feedback-events.jsonl` and retried until successful.
 
