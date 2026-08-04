@@ -1,0 +1,9 @@
+{
+  "schema": "mission-lite-release/v1",
+  "version": "0.1.0-beta.1",
+  "channel": "beta",
+  "published_at": "2026-08-04T00:00:00Z",
+  "release_url": "https://github.com/gomission/mission-lite/releases/tag/v0.1.0-beta.1",
+  "notes_url": "https://github.com/gomission/mission-lite/blob/v0.1.0-beta.1/CHANGELOG.md",
+  "artifacts": {}
+}

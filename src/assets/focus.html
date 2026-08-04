@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Mission — Focus</title>
+  <style>
+    :root{
+      --bg:#f5f5f7;--paper:#fff;--ink:#1d1d1f;--muted:#6e6e73;--line:#d8d8dc;--soft:#ececef;
+      --blue:#0071e3;--blue-hover:#0062c4;--violet:#674bd1;--green:#347853;--green-soft:#e7f2eb;--red:#a64e40;
+      --sans:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Helvetica,Arial,sans-serif;
+    }
+    :root[data-theme="dark"]{--bg:#000;--paper:#1c1c1e;--ink:#f5f5f7;--muted:#a1a1a6;--line:#38383a;--soft:#2c2c2e;--blue:#2997ff;--blue-hover:#58adff;--violet:#b5a4ff;--green:#73b98b;--green-soft:#193625;--red:#ef8876}
+    :root[data-theme-pair="bloom"]{--bg:#b9d39a;--paper:#f7efcb;--ink:#1d1a18;--muted:#666158;--line:#8f9c74;--soft:#e7dfbc;--blue:#486d64;--blue-hover:#315c52;--violet:#5a485c;--green:#5f7f64;--green-soft:#d8e6c7;--red:#a65b50}
+    :root[data-theme="dark"][data-theme-pair="bloom"]{--bg:#3a373f;--paper:#49434d;--ink:#f3e9c8;--muted:#d0c29e;--line:#7c746f;--soft:#5b535d;--blue:#a7c8bb;--blue-hover:#c3ded4;--violet:#b9d39a;--green:#9ac58d;--green-soft:#405442;--red:#f0997f}
+    :root[data-theme-pair="voltage"]{--bg:#8fd2c7;--paper:#f7efdd;--ink:#221c18;--muted:#6d6460;--line:#8fa6a0;--soft:#e8ddd0;--blue:#477f79;--blue-hover:#356b65;--violet:#574657;--green:#67806e;--green-soft:#d6e5da;--red:#b5616d}
+    :root[data-theme="dark"][data-theme-pair="voltage"]{--bg:#4d3d4a;--paper:#594753;--ink:#f1dfd1;--muted:#d0b7c1;--line:#8a7483;--soft:#67515f;--blue:#a8ddd6;--blue-hover:#c4eee8;--violet:#8fd2c7;--green:#a3c6ae;--green-soft:#405849;--red:#ef9b89}
+    :root[data-theme-pair="coral"]{--bg:#f4e86a;--paper:#fbf3d2;--ink:#191b24;--muted:#676044;--line:#b8aa45;--soft:#e9dda8;--blue:#245f82;--blue-hover:#194765;--violet:#6d3b75;--green:#2f6f55;--green-soft:#d5e2c0;--red:#9d3340}
+    :root[data-theme="dark"][data-theme-pair="coral"]{--bg:#111827;--paper:#1c2434;--ink:#f4ead0;--muted:#c4b79b;--line:#536078;--soft:#2e3a4f;--blue:#9bc2e8;--blue-hover:#bbd7f2;--violet:#f4e86a;--green:#7fc58a;--green-soft:#24462e;--red:#ff756b}
+    :root[data-theme-pair="ultraviolet"]{--bg:#c8a4b5;--paper:#f4d8c8;--ink:#261c25;--muted:#684f58;--line:#9f767e;--soft:#dfc2bd;--blue:#4c6797;--blue-hover:#374f7b;--violet:#5b3f6b;--green:#3f7348;--green-soft:#d8dfc7;--red:#9d3547}
+    :root[data-theme="dark"][data-theme-pair="ultraviolet"]{--bg:#211826;--paper:#33223a;--ink:#f5d4b8;--muted:#c4a18f;--line:#78596e;--soft:#543754;--blue:#b8a6ff;--blue-hover:#d0c5ff;--violet:#d1a642;--green:#7cc47d;--green-soft:#28472d;--red:#ff746a}
+    :root[data-theme-pair="lagoon"]{--bg:#c96a66;--paper:#f3d2c5;--ink:#1e2430;--muted:#75514f;--line:#b8615e;--soft:#ddbab0;--blue:#285f8e;--blue-hover:#1d4870;--violet:#1e2b3a;--green:#2e7452;--green-soft:#d1ddc5;--red:#9f302f}
+    :root[data-theme="dark"][data-theme-pair="lagoon"]{--bg:#1e2b3a;--paper:#2b3645;--ink:#f1d3b3;--muted:#c8a98f;--line:#756157;--soft:#35485e;--blue:#91bee9;--blue-hover:#b2d4f2;--violet:#c96a66;--green:#7dc98f;--green-soft:#254a32;--red:#ff756b}
+    :root[data-theme-pair="aurora"]{--bg:#2f5f83;--paper:#d8e0dc;--ink:#17232c;--muted:#4e5f68;--line:#7f9aa8;--soft:#bdcbc9;--blue:#265f91;--blue-hover:#184b78;--violet:#8f2633;--green:#2b7152;--green-soft:#c4d8cc;--red:#a93445}
+    :root[data-theme="dark"][data-theme-pair="aurora"]{--bg:#17232c;--paper:#223440;--ink:#d8e0dc;--muted:#aebdbd;--line:#4e6a7a;--soft:#304c60;--blue:#8fc6e6;--blue-hover:#b1daf0;--violet:#b63a48;--green:#80ca94;--green-soft:#254735;--red:#ff6f73}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:var(--sans)}
+    body{font-size:16px;line-height:1.47;letter-spacing:-.015em}button,textarea{font:inherit;color:inherit}button{cursor:pointer}a{color:inherit}
+    button:focus-visible,a:focus-visible,textarea:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+    .shell{min-height:100vh}.topbar{height:56px;position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid color-mix(in srgb,var(--line) 70%,transparent)}
+    .topbar-inner{height:100%;width:min(1040px,calc(100% - 36px));margin:auto;display:flex;align-items:center;gap:28px}.brand{display:flex;align-items:center;gap:9px;text-decoration:none;font-weight:650;letter-spacing:-.025em}.dot{width:8px;height:8px;border-radius:50%;background:var(--violet)}
+    nav{display:flex;align-items:center;gap:24px;margin-left:auto}nav a,.more-link{min-height:44px;display:flex;align-items:center;text-decoration:none;color:var(--muted);font-size:13px;letter-spacing:-.01em}nav a:hover,.more-link:hover{color:var(--ink)}nav a[aria-current="page"]{color:var(--ink);font-weight:600}.more-link{margin-left:5px}
+    main{width:min(980px,calc(100% - 36px));margin:0 auto;padding:76px 0 110px}.welcome{max-width:760px;margin-bottom:50px}.kicker{margin:0 0 12px;color:var(--muted);font-size:14px;font-weight:600}.welcome h1{margin:0;font-size:clamp(40px,7vw,68px);line-height:1.02;letter-spacing:-.055em;font-weight:650}.welcome p{max-width:650px;margin:18px 0 0;color:var(--muted);font-size:clamp(18px,2.4vw,23px);line-height:1.35;letter-spacing:-.025em}
+    .next-up{background:var(--paper);border-radius:28px;padding:clamp(28px,5vw,52px);min-height:330px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 1px 0 color-mix(in srgb,var(--ink) 6%,transparent),0 18px 55px color-mix(in srgb,var(--ink) 9%,transparent)}
+    .section-label{display:flex;align-items:center;gap:9px;margin:0 0 28px;color:var(--muted);font-size:13px;font-weight:600}.pulse{width:8px;height:8px;border-radius:50%;background:var(--green)}
+    .action-copy{max-width:760px}.action-copy h2{margin:0;font-size:clamp(31px,5vw,48px);font-weight:620;line-height:1.08;letter-spacing:-.045em;text-wrap:balance}.action-copy p{max-width:680px;margin:16px 0 0;color:var(--muted);font-size:18px;line-height:1.5;letter-spacing:-.022em;text-wrap:pretty}.action-meta{margin-top:12px;color:var(--muted);font-size:13px}
+    .action-footer{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:34px}.primary{min-height:48px;border:0;border-radius:999px;padding:0 22px;background:var(--blue);color:white;font-weight:600;letter-spacing:-.015em}.primary:hover{background:var(--blue-hover)}.primary[hidden]{display:none}.secondary-link{min-height:48px;display:flex;align-items:center;padding:0 10px;color:var(--blue);text-decoration:none}.secondary-link:hover{text-decoration:underline}.authority{margin-left:auto;color:var(--muted);font-size:12px}
+    .overview{padding:88px 0 0}.overview h2,.chat-section h2{margin:0;font-size:clamp(30px,4vw,42px);line-height:1.08;letter-spacing:-.04em;font-weight:620}.overview-lead{max-width:720px;margin:14px 0 46px;color:var(--muted);font-size:19px;line-height:1.5}
+    .progress-layout{display:grid;grid-template-columns:minmax(0,.7fr) minmax(300px,1.3fr);gap:42px;padding-top:32px;border-top:1px solid var(--line)}.progress-intro h3{margin:0;font-size:21px;letter-spacing:-.03em}.progress-intro p{margin:9px 0 0;color:var(--muted);font-size:14px}.progress-list{display:grid}.progress-row{padding:0 0 22px;margin:0 0 22px;border-bottom:1px solid var(--line)}.progress-row:last-child{margin-bottom:0}.progress-row h4{margin:0;font-size:17px;font-weight:620;letter-spacing:-.025em}.progress-row p{margin:7px 0 0;color:var(--muted);font-size:14px;line-height:1.5}.progress-date{display:block;margin-top:8px;color:var(--muted);font-size:12px}.empty-progress{color:var(--muted);font-size:15px}
+    .chat-section{padding:96px 0 0}.chat-head{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:26px}.chat-head p{max-width:430px;margin:0;color:var(--muted);font-size:15px}.chat-card{background:var(--paper);border-radius:24px;padding:clamp(20px,3vw,30px)}.messages{display:grid;gap:24px;max-height:460px;overflow:auto;margin-bottom:22px}.message{display:flex;gap:12px;align-items:flex-start}.message.user{justify-content:flex-end}.avatar{width:28px;height:28px;flex:0 0 auto;border-radius:50%;display:grid;place-items:center;background:var(--ink);color:var(--paper);font-size:11px;font-weight:700}.message.user .avatar{display:none}.bubble{max-width:720px}.message.user .bubble{padding:11px 15px;border-radius:18px 18px 5px 18px;background:var(--ink);color:var(--paper)}.bubble p{white-space:pre-wrap;margin:0}.assistant-copy{font-size:16px;line-height:1.58}.thinking{color:var(--muted)}.message-files{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}.message-file{border:1px solid currentColor;border-radius:999px;padding:3px 8px;font-size:10px;opacity:.72}
+    .file-list{display:flex;gap:6px;flex-wrap:wrap;margin:0 8px 8px}.file-list:empty{display:none}.file-chip{display:flex;align-items:center;gap:7px;max-width:220px;border-radius:999px;background:var(--soft);padding:5px 8px 5px 10px;font-size:11px}.file-chip span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.file-chip small{color:var(--muted)}.file-chip button{border:0;background:transparent;color:var(--muted);padding:0 2px}.file-chip button:hover{color:var(--red)}
+    .composer{border:1px solid var(--line);border-radius:18px;background:var(--bg);padding:7px;display:flex;align-items:flex-end;gap:5px}.composer.dragging{border-color:var(--blue)}.attach,.send{width:43px;height:43px;flex:0 0 auto;border:0;border-radius:50%;display:grid;place-items:center}.attach{background:transparent;color:var(--muted);font-size:20px}.attach:hover{background:var(--soft);color:var(--ink)}textarea{flex:1;min-width:0;max-height:140px;resize:none;border:0;outline:0;background:transparent;padding:10px 7px 8px;font-size:15px}.send{background:var(--ink);color:var(--paper);font-size:19px}.send:disabled,.attach:disabled{opacity:.4;cursor:wait}.cancel{height:43px;border:0;background:transparent;color:var(--muted);padding:0 9px;font-size:12px}.cancel[hidden]{display:none}.composer-note{text-align:center;margin-top:8px;color:var(--muted);font-size:11px}
+    .drop-overlay{position:fixed;inset:14px;z-index:50;border:2px dashed var(--blue);border-radius:24px;background:color-mix(in srgb,var(--bg) 94%,transparent);display:none;place-items:center;pointer-events:none}.drop-overlay.open{display:grid}.drop-overlay div{text-align:center}.drop-overlay strong{display:block;font-size:26px}.drop-overlay span{display:block;color:var(--muted);margin-top:6px}
+    .loading-line{height:1em;width:62%;border-radius:99px;background:var(--soft);animation:breathe 1.2s ease-in-out infinite alternate}@keyframes breathe{to{opacity:.45}}
+    @media(max-width:720px){.topbar-inner{gap:12px}nav{gap:16px;overflow:auto}.more-link{display:none}main{padding-top:48px}.welcome{margin-bottom:34px}.next-up{min-height:360px;border-radius:22px}.authority{width:100%;margin-left:0}.progress-layout{grid-template-columns:1fr;gap:28px}.chat-head{display:block}.chat-head p{margin-top:10px}.overview,.chat-section{padding-top:70px}}
+    @media(max-width:480px){nav a[href="/mission"]{display:none}.welcome h1{font-size:42px}.action-copy h2{font-size:31px}.next-up{padding:26px 22px}.chat-card{padding:18px 14px}}
+    @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+  </style>
+</head>
+<body>
+<div class="shell" id="app">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="/focus" aria-label="Mission home"><span class="dot"></span>mission</a>
+      <nav aria-label="Main menu">
+        <a href="#today" aria-current="page">Today</a>
+        <a href="#progress">Progress</a>
+        <a href="#chat">Chat</a>
+        <a href="https://github.com/gomission/mission-lite" rel="noopener">Source</a>
+      </nav>
+      <button class="more-link" id="check-update" type="button">Check updates</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="welcome" id="today">
+      <p class="kicker" id="workspace-name">Your Mission</p>
+      <h1 id="greeting">Good morning.</h1>
+      <p>Here’s what matters, what Mission is handling, and the one place you may want to step in.</p>
+    </section>
+
+    <section class="next-up" id="focus-action" aria-labelledby="action-title">
+      <div>
+        <p class="section-label"><span class="pulse" aria-hidden="true"></span>What matters now</p>
+        <div class="action-copy">
+          <h2 id="action-title"><span class="loading-line" aria-label="Loading today’s priority"></span></h2>
+          <p id="action-context">Looking for the most useful real move in this workspace.</p>
+          <div class="action-meta" id="action-next"></div>
+        </div>
+      </div>
+      <div class="action-footer">
+        <button class="primary" id="work-on-this" type="button">Work on this</button>
+        <a class="secondary-link" href="https://gomission.io/pro">Explore Mission Pro&nbsp;›</a>
+        <span class="authority">Nothing leaves Mission without your approval.</span>
+      </div>
+    </section>
+
+    <section class="overview" aria-labelledby="overview-title">
+      <h2 id="overview-title">Mission is on it.</h2>
+      <p class="overview-lead" id="overview-copy">It is organizing the work and will only bring you something when your attention is genuinely useful.</p>
+      <div class="progress-layout" id="progress">
+        <div class="progress-intro">
+          <h3>Latest progress</h3>
+          <p>Receipts, not promises. Only saved workspace evidence appears here.</p>
+        </div>
+        <div class="progress-list" id="progress-list" aria-live="polite"><p class="empty-progress">Looking for recent proof…</p></div>
+      </div>
+    </section>
+
+    <section class="chat-section" id="chat" aria-labelledby="chat-title">
+      <div class="chat-head">
+        <h2 id="chat-title">Ask Mission.</h2>
+        <p>Talk through a decision, ask what changed, or add a file. Chat supports the work—it is not the whole product.</p>
+      </div>
+      <div class="chat-card">
+        <section class="messages" id="chat-messages" aria-live="polite" aria-label="Conversation with Mission">
+          <article class="message assistant">
+            <div class="avatar" aria-hidden="true">M</div>
+            <div class="bubble assistant-copy"><p>I’m here when you want to think something through.</p></div>
+          </article>
+        </section>
+        <div class="file-list" id="file-list" aria-live="polite"></div>
+        <form class="composer" id="chat-form">
+          <input id="file-input" type="file" multiple hidden accept="image/*,.pdf,.doc,.docx,.txt,.md,.csv,.json,.html,.css,.js,.mjs,.ts,.tsx,.py,.rb,.go,.rs,.java,.xml,.yaml,.yml">
+          <button class="attach" type="button" id="attach" aria-label="Attach files" title="Attach files">＋</button>
+          <textarea id="chat-input" rows="1" maxlength="1000" aria-label="Message Mission" placeholder="Ask Mission or drop files here…"></textarea>
+          <button class="cancel" type="button" id="cancel-request" hidden>Cancel</button>
+          <button class="send" type="submit" id="send" aria-label="Send to Mission">↑</button>
+        </form>
+        <div class="composer-note">Files stay in this workspace · Mission Lite cannot perform external actions</div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div class="drop-overlay" id="drop-overlay"><div><strong>Drop files into Mission</strong><span>They will be read as context, not treated as authority.</span></div></div>
+
+<script>
+(() => {
+  const $=id=>document.getElementById(id);
+  const apiHeaders={'content-type':'application/json','x-mission-lite-token':window.MISSION_API_TOKEN||''};
+  const messages=$('chat-messages'),form=$('chat-form'),input=$('chat-input'),fileInput=$('file-input'),fileList=$('file-list');
+  const attach=$('attach'),send=$('send'),cancel=$('cancel-request'),overlay=$('drop-overlay'),actionButton=$('work-on-this');
+  const MAX_FILE_BYTES=15*1024*1024;
+  let pendingFiles=[],activeController=null,dragDepth=0,currentAction=null;
+  function formatBytes(bytes){if(bytes>=1024*1024)return(bytes/1024/1024).toFixed(bytes>=10*1024*1024?0:1)+'MB';if(bytes>=1024)return Math.round(bytes/1024)+'KB';return bytes+'B'}
+  function make(tag,className,text){const node=document.createElement(tag);if(className)node.className=className;if(text!==undefined)node.textContent=text;return node}
+  function scrollToLatest(){requestAnimationFrame(()=>messages.scrollTo({top:messages.scrollHeight,behavior:'smooth'}))}
+  function appendMessage(role,text,files=[]){const article=make('article','message '+role);article.dataset.role=role;if(role==='assistant')article.append(make('div','avatar','M'));const bubble=make('div','bubble'+(role==='assistant'?' assistant-copy':''));bubble.append(make('p','',text));if(files.length){const list=make('div','message-files');files.forEach(file=>list.append(make('span','message-file',file.name)));bubble.append(list)}article.append(bubble);messages.append(article);scrollToLatest();return article}
+  function setAssistantMessage(article,text,isError=false){const p=article.querySelector('p');p.className=isError?'error':'';p.textContent=text;article.classList.remove('loading');scrollToLatest()}
+  function renderOverview(out){
+    $('workspace-name').textContent=out.workspace||'Your Mission';$('overview-copy').textContent=out.overview||'Mission is keeping the work organized.';currentAction=out.action||null;
+    if(currentAction){$('action-title').textContent=currentAction.title;$('action-context').textContent=currentAction.context||currentAction.next||'';$('action-next').textContent=currentAction.next?'Next: '+currentAction.next:'';actionButton.hidden=false}
+    else{$('action-title').textContent='You’re caught up.';$('action-context').textContent='Mission does not see a saved priority that needs your attention right now.';$('action-next').textContent='';actionButton.hidden=true}
+    const list=$('progress-list');list.replaceChildren();const rows=Array.isArray(out.progress)?out.progress:[];
+    if(!rows.length){list.append(make('p','empty-progress','No receipt-backed progress has been saved yet.'))}
+    rows.forEach(row=>{const article=make('article','progress-row');article.append(make('h4','',row.title||'Progress captured'),make('p','',row.summary||''));if(row.date)article.append(make('span','progress-date',row.date));list.append(article)})
+  }
+  async function loadOverview(){try{const response=await fetch('/api/focus-overview');const out=await response.json();if(!response.ok||out.ok===false)throw new Error(out.error||'Overview unavailable');renderOverview(out)}catch{$('action-title').textContent='Everything is calm.';$('action-context').textContent='Mission could not load the workspace overview. Chat is still available below.';$('action-next').textContent='';actionButton.hidden=true;$('overview-copy').textContent='The overview is temporarily unavailable.';$('progress-list').replaceChildren(make('p','empty-progress','Progress will appear when the workspace overview is available.'))}}
+  function setGreeting(){const hour=new Date().getHours();$('greeting').textContent=hour<12?'Good morning.':hour<18?'Good afternoon.':'Good evening.'}
+  function resizeInput(){input.style.height='auto';input.style.height=Math.min(input.scrollHeight,140)+'px'}
+  function renderFiles(){fileList.replaceChildren();pendingFiles.forEach((file,index)=>{const chip=make('div','file-chip');chip.append(make('span','',file.name),make('small','',formatBytes(file.size)));const remove=make('button','','×');remove.type='button';remove.setAttribute('aria-label','Remove '+file.name);remove.addEventListener('click',()=>{pendingFiles.splice(index,1);fileInput.value='';renderFiles()});chip.append(remove);fileList.append(chip)})}
+  function addFiles(files){const incoming=Array.from(files||[]).filter(Boolean);const tooLarge=incoming.find(file=>file.size>MAX_FILE_BYTES);if(tooLarge){appendMessage('assistant',tooLarge.name+' is larger than 15MB. Choose a smaller file.');return}pendingFiles=[...pendingFiles,...incoming].slice(0,8);renderFiles();$('chat').scrollIntoView({behavior:'smooth',block:'start'});input.focus()}
+  function filePayload(file){return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve({name:file.name||'attachment',mime:file.type||'application/octet-stream',size:file.size||0,data:String(reader.result||'')});reader.onerror=()=>reject(reader.error||new Error('Could not read '+file.name));reader.readAsDataURL(file)})}
+  function attachmentAnswer(out){const results=Array.isArray(out.results)?out.results:[];const lines=[];results.forEach(row=>{const analysis=row.analysis||{};if(analysis.summary)lines.push(analysis.summary);const outcomes=Array.isArray(analysis.outcome_candidates)?analysis.outcome_candidates:[];if(outcomes[0])lines.push(outcomes[0].proposed_action||outcomes[0].why||outcomes[0].title||'')});if(out.failed)lines.push(out.failed+' attachment'+(out.failed===1?'':'s')+' could not be read.');return lines.filter(Boolean).join('\n\n')||'I read the attachment and added it to Mission context.'}
+  function responseAnswer(out){const reply=Array.isArray(out.reply)?out.reply.filter(Boolean).join('\n\n'):String(out.reply||out.message||'').trim();return reply||'Mission updated the workspace.'}
+  function setBusy(busy){send.disabled=busy;attach.disabled=busy;cancel.hidden=!busy;input.disabled=busy}
+  async function submitChat(event){event.preventDefault();const text=input.value.trim();const files=[...pendingFiles];if(!text&&!files.length)return;appendMessage('user',text||'Review these files.',files);input.value='';resizeInput();pendingFiles=[];fileInput.value='';renderFiles();const waiting=appendMessage('assistant',files.length?'Reading the files and using them as context':'Thinking with your Mission context');waiting.classList.add('loading');activeController=new AbortController();setBusy(true);try{let response;if(files.length){const payloads=await Promise.all(files.map(filePayload));response=await fetch('/api/attachment-intake',{method:'POST',headers:apiHeaders,body:JSON.stringify({prompt:text||'Read these files and answer with the most useful next move.',source:'focus-chat',files:payloads}),signal:activeController.signal})}else{response=await fetch('/api/command-capture',{method:'POST',headers:apiHeaders,body:JSON.stringify({text}),signal:activeController.signal})}const out=await response.json().catch(()=>({}));if(!response.ok||out.ok===false)throw new Error(out.error||out.stderr||'Mission could not answer.');setAssistantMessage(waiting,files.length?attachmentAnswer(out):responseAnswer(out))}catch(error){setAssistantMessage(waiting,error.name==='AbortError'?'Request cancelled.':(/failed to fetch|networkerror/i.test(error.message)?'Mission Web is offline. Open this page through the local Mission server and try again.':error.message),true)}finally{activeController=null;setBusy(false);input.focus()}}
+  actionButton.addEventListener('click',()=>{if(!currentAction)return;input.value=currentAction.prompt||('Help me work through '+currentAction.title);resizeInput();$('chat').scrollIntoView({behavior:'smooth',block:'start'});setTimeout(()=>input.focus(),250)});
+  form.addEventListener('submit',submitChat);input.addEventListener('input',resizeInput);input.addEventListener('keydown',event=>{if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();form.requestSubmit()}});attach.addEventListener('click',()=>fileInput.click());fileInput.addEventListener('change',()=>addFiles(fileInput.files));cancel.addEventListener('click',()=>activeController?.abort());
+  window.addEventListener('dragenter',event=>{if(!Array.from(event.dataTransfer?.types||[]).includes('Files'))return;event.preventDefault();dragDepth++;overlay.classList.add('open');form.classList.add('dragging')});window.addEventListener('dragover',event=>{if(Array.from(event.dataTransfer?.types||[]).includes('Files'))event.preventDefault()});window.addEventListener('dragleave',()=>{dragDepth=Math.max(0,dragDepth-1);if(!dragDepth){overlay.classList.remove('open');form.classList.remove('dragging')}});window.addEventListener('drop',event=>{if(!event.dataTransfer?.files?.length)return;event.preventDefault();dragDepth=0;overlay.classList.remove('open');form.classList.remove('dragging');addFiles(event.dataTransfer.files)});input.addEventListener('paste',event=>{const files=Array.from(event.clipboardData?.files||[]);if(files.length)addFiles(files)});
+  setGreeting();loadOverview();
+  const updateButton=$('check-update');
+  updateButton.addEventListener('click',async()=>{if(updateButton.dataset.releaseUrl){window.open(updateButton.dataset.releaseUrl,'_blank','noopener');return}const original=updateButton.textContent;updateButton.textContent='Checking…';updateButton.disabled=true;try{const response=await fetch('/api/version?check=1');const out=await response.json();if(!response.ok||out.ok===false)throw new Error(out.error||'Update check failed');if(out.update_available){updateButton.dataset.releaseUrl=out.release_url;updateButton.textContent='Download '+out.latest_version;updateButton.disabled=false}else{updateButton.textContent='Up to date · '+out.current_version;setTimeout(()=>{updateButton.textContent=original;updateButton.disabled=false},2600)}}catch{updateButton.textContent='Check unavailable';setTimeout(()=>{updateButton.textContent=original;updateButton.disabled=false},2600)}});
+})();
+</script>
+</body>
+</html>

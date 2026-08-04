@@ -1,0 +1,38 @@
+{
+  "name": "@gomission/mission-lite",
+  "version": "0.1.0-beta.1",
+  "description": "Free, open-source, local-first Mission focus app.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "author": "Phenomena Labs Ltd <mission@gomission.io> (https://gomission.io)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gomission/mission-lite.git"
+  },
+  "homepage": "https://gomission.app",
+  "bugs": {
+    "url": "https://github.com/gomission/mission-lite/issues"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "bin": {
+    "mission-lite": "./bin/mission-lite.mjs"
+  },
+  "files": [
+    "bin/",
+    "src/",
+    "releases/",
+    "LICENSE",
+    "README.md",
+    "SECURITY.md"
+  ],
+  "scripts": {
+    "start": "node bin/mission-lite.mjs",
+    "test": "node --test",
+    "release:check": "node scripts/check-release.mjs"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

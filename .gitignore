@@ -1,0 +1,5 @@
+node_modules/
+dist/
+mission-lite-data/
+.DS_Store
+*.log
