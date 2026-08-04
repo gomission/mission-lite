@@ -4,6 +4,15 @@ import path from "node:path";
 import { spawn } from "node:child_process";
 import { startMissionLite } from "../src/server.mjs";
 
+function parseBoolean(raw, fallback = false) {
+  if (typeof raw === "boolean") return raw;
+  if (raw == null) return fallback;
+  const normalized = String(raw).trim().toLowerCase();
+  if (["1", "true", "yes", "on", "enabled", "enable"].includes(normalized)) return true;
+  if (["0", "false", "no", "off", "disabled", "disable"].includes(normalized)) return false;
+  return fallback;
+}
+
 const args = process.argv.slice(2);
 const value = (name, fallback = "") => {
   const index = args.indexOf(name);
@@ -25,7 +34,18 @@ and never performs external actions.`);
 
 const workspace = path.resolve(value("--workspace", process.cwd()));
 const port = Number(value("--port", process.env.MISSION_LITE_PORT || "8798"));
-const app = await startMissionLite({ workspace, port });
+const feedbackEnabled = parseBoolean(process.env.MISSION_LITE_FEEDBACK_ENABLED, true);
+const feedbackEndpoint = process.env.MISSION_LITE_FEEDBACK_ENDPOINT;
+const app = await startMissionLite({
+  workspace,
+  port,
+  feedback: {
+    enabled: feedbackEnabled,
+    endpoint: feedbackEndpoint,
+    flushBatch: Number(process.env.MISSION_LITE_FEEDBACK_BATCH || 25),
+    flushIntervalMs: Number(process.env.MISSION_LITE_FEEDBACK_FLUSH_MS || 700),
+  },
+});
 console.log(`Mission Lite ${app.version} running at ${app.origin}/focus`);
 console.log(`Workspace: ${workspace}`);
 

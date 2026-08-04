@@ -48,4 +48,19 @@ GitHub Releases are the canonical source for artifacts and checksums. The app's 
 
 See [CONTRIBUTING.md](CONTRIBUTING.md). Security issues should be reported using [SECURITY.md](SECURITY.md), not a public issue.
 
+## Anonymous Lite feedback reporting
+
+Mission Lite sends anonymized, opt-out telemetry from the local app so free users can shape how Mission evolves (with no workspace text content included).
+
+The default CLI launch settings enable this reporting, using:
+
+- `MISSION_LITE_FEEDBACK_ENABLED` (default: `1`, set to `0`/`false` to disable)
+- `MISSION_LITE_FEEDBACK_ENDPOINT` (default: `https://gomission.app/api/v1/mission-lite/feedback`)
+- `MISSION_LITE_FEEDBACK_BATCH` (default: `25`)
+- `MISSION_LITE_FEEDBACK_FLUSH_MS` (default: `700`)
+
+Events are queued in `mission-lite-data/feedback-events.jsonl` and retried until successful.
+
+No message text, prompt content, or attachment payload bytes are included in feedback events.
+
 Mission Lite is beta software. Back up important workspace data.
