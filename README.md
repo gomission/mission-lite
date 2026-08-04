@@ -42,7 +42,7 @@ The source is licensed under Apache 2.0. Mission names and logos are trademarks;
 
 ## Releases and updates
 
-GitHub Releases are the canonical source for artifacts and checksums. The app's **Check updates** control reads the signed HTTPS release feed at `https://gomission.app/releases/latest.json`; it never installs software automatically. See [releases/README.md](releases/README.md).
+GitHub Releases are the canonical source for artifacts and checksums. The app's **Check updates** control reads the HTTPS release feed at `https://gomission.app/releases/latest.json`; it never installs software automatically. The beta feed is not yet cryptographically signed. See [releases/README.md](releases/README.md).
 
 ## Contributing
 
