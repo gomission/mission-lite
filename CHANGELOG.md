@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.0-beta.2 — 2026-09-22
+
+- Keep the current focus when chat contains a greeting, question, or conversational message.
+- Accept explicit “Focus on …” requests and distinguish “Done” from a new task beginning with “Complete”.
+- Handle curly apostrophes in “what’s next” and record completion only once.
+
 ## 0.1.0-beta.1 — 2026-08-04
 
 - First public Mission Lite beta.

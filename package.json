@@ -1,6 +1,6 @@
 {
   "name": "@gomission/mission-lite",
-  "version": "0.1.0-beta.1",
+  "version": "0.1.0-beta.2",
   "description": "Free, open-source, local-first Mission focus app.",
   "type": "module",
   "license": "Apache-2.0",

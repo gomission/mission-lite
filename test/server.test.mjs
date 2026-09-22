@@ -39,6 +39,62 @@ test("serves Focus and protects state changes with a local token", async (t) => 
   assert.equal(state.action.title, "Ship the beta");
 });
 
+test("conversation preserves focus until an explicit action is supplied", async (t) => {
+  const workspace = fs.mkdtempSync(path.join(os.tmpdir(), "mission-lite-conversation-"));
+  const app = await startMissionLite({ workspace, port: 0, feedback: { enabled: false } });
+  t.after(async () => {
+    await new Promise((resolve) => app.server.close(resolve));
+    fs.rmSync(workspace, { recursive: true, force: true });
+  });
+  const html = await (await fetch(`${app.origin}/focus`)).text();
+  const token = html.match(/window\.MISSION_API_TOKEN="([^"]+)"/)?.[1];
+  const command = async (text) => {
+    const response = await fetch(`${app.origin}/api/command-capture`, {
+      method: "POST",
+      headers: { "content-type": "application/json", "x-mission-lite-token": token },
+      body: JSON.stringify({ text }),
+    });
+    assert.equal(response.status, 200);
+    return response.json();
+  };
+  const state = () => JSON.parse(fs.readFileSync(path.join(workspace, "mission-lite-data/state.json"), "utf8"));
+  await command("Ship the beta");
+  const original = state();
+  for (const text of ["gm", "how are you today?", "What's next?", "make it simpler", "done by Friday?", "I am feeling stuck"]) {
+    const result = await command(text);
+    assert.ok(result.reply[0]);
+    assert.deepEqual(state(), original, text);
+  }
+  await command("Focus on the launch announcement");
+  assert.equal(state().action.title, "the launch announcement");
+  await command("Complete the release checklist");
+  assert.equal(state().action.title, "Complete the release checklist");
+});
+
+test("ordinary completion records the existing focus once and clears it", async (t) => {
+  const workspace = fs.mkdtempSync(path.join(os.tmpdir(), "mission-lite-completion-"));
+  const app = await startMissionLite({ workspace, port: 0, feedback: { enabled: false } });
+  t.after(async () => {
+    await new Promise((resolve) => app.server.close(resolve));
+    fs.rmSync(workspace, { recursive: true, force: true });
+  });
+  const html = await (await fetch(`${app.origin}/focus`)).text();
+  const token = html.match(/window\.MISSION_API_TOKEN="([^"]+)"/)?.[1];
+  const command = async (text) => {
+    const response = await fetch(`${app.origin}/api/command-capture`, {
+      method: "POST", headers: { "content-type": "application/json", "x-mission-lite-token": token },
+      body: JSON.stringify({ text }),
+    });
+    assert.equal(response.status, 200);
+    return response.json();
+  };
+  await command("Write the release summary");
+  assert.match((await command("Done!")).reply[0], /Write the release summary.*complete/);
+  const overview = await (await fetch(`${app.origin}/api/focus-overview`)).json();
+  assert.equal(overview.action, null);
+  assert.match((await command("done")).reply[0], /no active focus/i);
+});
+
 test("emits anonymized feedback events for Lite usage", async (t) => {
   const workspace = fs.mkdtempSync(path.join(os.tmpdir(), "mission-lite-feedback-"));
   const captured = [];

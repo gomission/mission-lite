@@ -138,7 +138,7 @@ export async function startMissionLite({ workspace, port = 8798, feedback = {} }
             });
             return json(res, 400, { ok: false, error: "Write what you want Mission Lite to hold in focus." });
           }
-          if (/^(done|complete|completed|finished)\\b/i.test(text)) {
+          if (/^(done|complete|completed|finished)[.!]?$/i.test(text)) {
             const finished = store.completeAction();
             feedbackCollector.record("command_capture", {
               ok: true,
@@ -156,7 +156,7 @@ export async function startMissionLite({ workspace, port = 8798, feedback = {} }
               ],
             });
           }
-          if (/what (?:matters|should i|is my focus)|what's (?:my focus|next)/i.test(text)) {
+          if (/what (?:matters|should i|is my focus)|what['’]s (?:my focus|next)/i.test(text)) {
             const current = store.readState().action;
             feedbackCollector.record("command_capture", {
               ok: true,
@@ -174,7 +174,25 @@ export async function startMissionLite({ workspace, port = 8798, feedback = {} }
               ],
             });
           }
-          const action = store.setAction(text);
+          const explicitFocus = text.match(/^(?:(?:set|change|switch) (?:my |the |our )?focus (?:to|on)|focus on)\s+(.+)$/i);
+          const isQuestion = /\?|^(?:how|why|what|when|where|who|can|could|would|should|do|does|is|are)\b/i.test(text);
+          const isTask = /^(?:please\s+)?(?:write|build|design|create|ship|review|finish|prepare|fix|draft|plan|research|test|complete)\b/i.test(text);
+          if (!explicitFocus && (isQuestion || !isTask)) {
+            const current = store.readState().action;
+            const greeting = /^(?:gm|hi|hello|hey|good morning|good afternoon|good evening)[.!]?$/i.test(text);
+            feedbackCollector.record("command_capture", {
+              ok: true, action: "conversation", source: input.source || "focus-chat",
+              has_focus: Boolean(current), text_length: text.length,
+            });
+            return json(res, 200, {
+              ok: true,
+              reply: [greeting
+                ? "Hi. What would you like to make progress on?"
+                : `${current ? `Your focus is still “${current.title}”. ` : ""}I can keep one outcome in focus and record your progress. Say “Focus on …” to choose it, or “Done” when you finish.`,
+              ],
+            });
+          }
+          const action = store.setAction(explicitFocus ? explicitFocus[1] : text);
           feedbackCollector.record("command_capture", {
             ok: true,
             action: "set_focus",
